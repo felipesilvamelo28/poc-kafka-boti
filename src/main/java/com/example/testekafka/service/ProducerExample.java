@@ -25,7 +25,7 @@ public class ProducerExample {
         try {
             for (long index = time; index < time + sendMessageCount; index++) {
                 final ProducerRecord<Long, String> record =
-                        new ProducerRecord<>("TesteOrdenacao", index,
+                        new ProducerRecord<>("teste2", index,
                                 "Hello Mom " + index);
 
                 RecordMetadata metadata = producer.send(record).get();

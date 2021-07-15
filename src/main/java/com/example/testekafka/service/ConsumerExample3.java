@@ -13,7 +13,7 @@ import java.util.Properties;
 
 public class ConsumerExample3 {
 
-    private final static String TOPIC = "TesteOrdenacao";
+    private final static String TOPIC = "teste2";
     private final static String BOOTSTRAP_SERVERS = "localhost:9091";
 
     private static Consumer<Long, String> createConsumer() {
