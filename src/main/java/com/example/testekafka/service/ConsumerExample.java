@@ -1,19 +1,22 @@
 package com.example.testekafka.service;
 
+import com.example.testekafka.entity.Arquivo;
+import com.example.testekafka.repository.ArquivoRepository;
+import com.google.gson.Gson;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
 
-public class ConsumerExample2 {
+public class ConsumerExample {
 
-    private final static String TOPIC = "teste2";
+    @Autowired
+    private static ArquivoRepository arquivoRepository;
+    private final static String TOPIC = "teste4";
     private final static String BOOTSTRAP_SERVERS = "localhost:9091";
 
     private static Consumer<Long, String> createConsumer() {
@@ -31,7 +34,7 @@ public class ConsumerExample2 {
         return consumer;
     }
 
-    static void runConsumer() throws InterruptedException {
+    public static void runConsumer(ArquivoRepository arquivoRepository) throws InterruptedException {
         final Consumer<Long, String> consumer = createConsumer();
 
         final int giveUp = 100;   int noRecordsCount = 0;
@@ -46,11 +49,12 @@ public class ConsumerExample2 {
             }
 
             consumerRecords.forEach(record -> {
+                Arquivo arquivo = new Gson().fromJson(record.value(), Arquivo.class);
+                arquivoRepository.save(arquivo);
                 System.out.printf("Consumer Record:(%d, %s, %d, %d)\n",
                         record.key(), record.value(),
                         record.partition(), record.offset());
             });
-
             consumer.commitAsync();
         }
         consumer.close();
@@ -58,7 +62,7 @@ public class ConsumerExample2 {
     }
 
     public static void main(String... args) throws Exception {
-        runConsumer();
+        runConsumer(arquivoRepository);
     }
 
 }

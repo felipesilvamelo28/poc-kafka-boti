@@ -23,10 +23,23 @@ public class ProducerExample {
         long time = System.currentTimeMillis();
 
         try {
+            String msg = "{\n" +
+                    "      \"location_id\":385858,\n" +
+                    "      \"location_uuid\":\"4b2107b9-3d3e-4a28-9490-5ce6d9d4c1b0\",\n" +
+                    "      \"sku\":17236,\n" +
+                    "      \"total_quantity\":5,\n" +
+                    "      \"reserved_quantity\":0,\n" +
+                    "      \"available_quantity\":5,\n" +
+                    "      \"threshold\":null,\n" +
+                    "      \"updated_at\":\"2021-07-07 20:00:13.003690\",\n" +
+                    "      \"enabled\":true,\n" +
+                    "      \"external_id\":null,\n" +
+                    "      \"distribution_center\":null\n" +
+                    "   }\n";
+
             for (long index = time; index < time + sendMessageCount; index++) {
                 final ProducerRecord<Long, String> record =
-                        new ProducerRecord<>("teste2", index,
-                                "Hello Mom " + index);
+                        new ProducerRecord<>("teste4", msg);
 
                 RecordMetadata metadata = producer.send(record).get();
 
@@ -44,6 +57,6 @@ public class ProducerExample {
     }
 
     public static void main(String[] args) throws Exception {
-        runProducer(20);
+        runProducer(400000);
     }
 }
